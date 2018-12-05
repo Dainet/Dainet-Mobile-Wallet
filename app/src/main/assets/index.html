@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<!--
+
+Copyright (c) 2018 Dainet Network
+https://www.dain.network
+
+MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Dainet Wallet. Secure and light Dainet Wallet for erc20 token.">
+        <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline';img-src: *;script-src: * 'unsafe-inline'">
+        <title>Dainet Wallet</title>
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="css/pure-min.css">
+        <link rel="stylesheet" href="css/grids-responsive-min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/side-menu.css">
+        <link rel="stylesheet" href="css/jquery.modal.min.css">
+        <script src="js/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div id="layout">
+
+            <a href="#menu" id="menuLink" class="menu-link">
+                <span></span>
+            </a>
+            <div class="header" id="header">
+                <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+                    <span class="pure-menu-heading">
+                        <img src="img/logo.png" alt="Dainet Erc20 Wallet"/> Dainet Wallet
+                    </span>
+                </div>
+            </div>
+
+            <div id="menu">
+                <div class="pure-menu">
+                    <a class="pure-menu-heading" href="#">Menu</a>
+                    <ul class="pure-menu-list">
+                        <li class="pure-menu-item"><a href="file:///android_asset/index.html" class="pure-menu-link"><i class="fa fa-credit-card-alt fa-fw"></i> Wallet <span id="onlineMel">online</span></a></li>
+                        <li class="pure-menu-item logout-element"><a href="#" class="pure-menu-link" id="openSendButton"><i class="fa fa-send fa-fw"></i> Send tokens</a></li>
+                        <li class="pure-menu-item logout-element"><a href="#" class="pure-menu-link" id="saveKeysButton"><i class="fa fa-save fa-fw"></i> Export private key</a></li>
+                        <li class="pure-menu-item"><a href="#" class="pure-menu-link" id="aboutButton"><i class="fa fa-question-circle fa-fw"></i> About</a></li>
+                        <li class="pure-menu-item logout-element"><a href="#" class="pure-menu-link" id="logoutButton"><i class="fa fa-times-circle fa-fw"></i> Log out</a></li>
+
+                    </ul>
+                </div>
+            </div>
+
+            <div id="main">
+                <div class="splash-container">
+                    <div class="splash">
+                        
+                        <div id="offlineInfo">
+                            <i class="fa fa-exclamation-circle text-danger"></i> Wallet is offline. Check your internet connection...
+                        </div>
+                        
+                        <div class="spinner"></div>
+                        <div class="spinnerlabel splash-subhead">Loading...</div>
+                        <div id="registerSection">
+                            <p class="splash-subhead">
+                                Light Mobile Wallet<br />store and send your DAINET ERC20 Tokens
+                            </p>
+                            <p>
+                                <a href="#" class="pure-button pure-button-big" id="createBigButton">Create new wallet</a>
+                            </p>
+                            <p>
+                                <a href="#" class="pure-button pure-button-big" id="restoreButton">Restore your wallet</a>
+                            </p>
+                        </div>
+                        <div id="saveKeySection" class="frameInfo pure-form">
+                            <div class="headDiv">Congratulations</div>
+                            Your new wallet is created. Write down these 12 words recovery seed:<br><br> 
+                            <div id="seedCopy">
+                                <textarea id="d12keys" onclick="this.focus();this.select()" readonly="readonly"></textarea>
+
+                                <div class="margin-4">
+                                    <i class='fa fa-copy'></i> copy to clipboard
+                                </div>
+                            </div>
+                            <p class="text-center">
+                                <span class="red">
+                                    <i class="fa fa-2x fa-exclamation-triangle" aria-hidden="true"></i> <br />
+                                    We do not store your seed or private keys<br />
+                                    and will not be able to restore your wallet if you loose it.
+                                </span>
+                                <br>
+                                Continue after save.<br><br>
+                                <a href="#" class="pure-button pure-button-primary" id="saveSeedButton">Continue</a><br>
+                                <br>
+                            </p>
+                        </div>
+                        <div id="walletSection" class="pure-form">
+
+                            <div class="frameInfo mainFrame">
+                                <div>
+                                    <div class="headDiv">Your balance</div>
+                                    <div id="tokenBalanceDiv">
+                                        <span class="tokenBalance">0</span>DAIN<br><br>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="headDiv" id="headWall">Your Wallet address <i class="fa fa-question-circle"></i></div>
+                                    <div id="ethAddressDiv">
+                                        <span id="ethAddress"><i>loading...</i></span>
+                                        <i class="fa fa-copy"></i>
+                                    </div>
+                                    <div class="pure-g">
+                                        <div class="pure-u-1-6"><img id="addrQR" class="pure-img-responsive" alt="QR Code" /></div>
+                                        <div class="pure-u-5-6">
+                                            <div class="margin-left-12">
+                                                You have <br />
+                                                <span class="ethBalance">0</span> ETH
+                                            </div>
+                                        </div>
+                                        <div id="qrBox"><img id="addrQRZoom" class="pure-img-responsive" alt="QR Code" /></div>
+                                    </div>
+                                    <div class="notice">
+                                        Since Dainet is an ERC20 token you need to have some Ether in your wallet to facilitate your transaction with tokens on the Ethereum mainnet.
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="frameInfo mainFrame" id="sendBox">
+                                <div class="headDiv">Send DAIN tokens</div> 
+                                <div class="notice">
+                                    Always validate your desination address. 
+                                    The destination address must be the Ethereum address
+                                </div>
+                                <div>
+                                    To address: <br />
+                                    <input type="text" id="destAddr" value="" class="form-control" placeholder="0x000000000000000">
+                                    <br />
+                                    Amount Dains(s): <br />
+                                    <input type="text" id="tokenAmount" class="form-control" placeholder="0.000000" value="">
+                                    
+                                    <div>
+                                        <span onclick="$('#gasPriceDiv').toggle();" class="pointer pull-right"><i class="fa fa-cog"></i></span>
+                                        <div id="gasPriceDiv">
+                                        Gas Price (in Gwei, recommended 5 - 40): <br />
+                                        <input type="text" id="gasPrice" class="form-control" placeholder="0.000000" value="">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="is-center">
+                                        <button id="sendButton" class="pure-button pure-button-primary"><i class="fa fa-bolt"></i> Send</button>
+                                    </div>
+                                    <div id="resultDiv" class="info"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            &copy; 2018 Dainet Network
+        </div>
+        <div id="headWallExplain">
+
+            The Dainet token is an ERC20 token based on 
+            the Ethereum network. That's why the address of 
+            your Dainet wallet is Ethereum's address. After 
+            downloading the private key, you can handle your 
+            address on other wallets, eg MyEtherWallet
+
+        </div>
+
+        <div id="modalVal"></div>
+
+        <div id="modalImportSeed">
+            <div class="headDiv">Restore Wallet</div> 
+            Insert your 12 words mnemonic phrase here: <br />
+
+            <textarea id="seedIn" class="form-control"></textarea>
+
+            <p class="text-center">
+                <span class="red" id="importError"></span>
+                <br />
+                <br />
+                <a href="#" class="pure-button pure-button-primary" id="restoreButtonNov">Continue</a><br>
+            </p>
+        </div>
+
+        <div id="modalExportKeys">
+            <div class="headDiv">Export private key</div> 
+            Private key: <br />
+            <div id="modalExportKeysCopy">
+                <input type='text' id='privKeyExt' value='' class='form-control'/>
+                <br />
+                <i class='fa fa-copy'></i> copy to clipboard
+            </div>
+            <br /><br />
+            The key should be kept in secure place!
+            <div id="privKeyExtVal"></div>
+        </div>
+        <script src="js/jquery.modal.min.js"></script>
+        <script src="js/config.js"></script>
+        <script src="js/lightwallet.js"></script>
+        <script src="js/dainetmobilewallet.js"></script>
+        <script src="js/ui.js"></script>
+        <script type="text/javascript">
+                                    dainetwallet.initialize();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,55 @@
+// Dainet Mobile Wallet
+//
+apply plugin: 'com.android.application'
+
+// version
+final VERSION_MAJOR = 1 // max two digits
+final VERSION_MINOR = 0 // max two digits
+final VERSION_PATCH = 0 // max two digits
+final VERSION_BUILD = 8 // max three digits
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "network.dain.dainetwallet"
+        minSdkVersion 23
+        targetSdkVersion 28
+        versionCode VERSION_MAJOR * 10000000 + VERSION_MINOR * 100000 + VERSION_PATCH * 1000 + VERSION_BUILD
+        versionName "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
+    }
+    buildTypes {
+        debug {
+            buildConfigField "boolean", "DEBUG_MODE", "true"
+            versionNameSuffix "-debug"
+        }
+        release {
+            buildConfigField "boolean", "DEBUG_MODE", "false"
+            zipAlignEnabled true
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    applicationVariants.all {
+        variant ->
+            if (variant.buildType.name.equals("release")) {
+                variant.outputs.each {
+                    output ->
+                        def outputFile = output.outputFile
+                        def date = new Date()
+                        if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                            def fileName = outputFile.name.replace(
+                                    "app",
+                                    "dainetwallet" + "-" + defaultConfig.versionName + "-" + defaultConfig.versionCode + "-" + date.format('yyyyMMdd'))
+                            output.outputFileName = fileName
+                        }
+                }
+            }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+}
